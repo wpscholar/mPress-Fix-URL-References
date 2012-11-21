@@ -41,8 +41,8 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 				<h2><?php _e( 'mPress Fix URL References', 'mpress-fix-url-references' ); ?></h2>
 				<div class="tool-box"><?php
 					if( ! empty( $_POST['replace_url'] ) && isset( $_POST['nonce'] ) && wp_verify_nonce( $_POST['nonce'], 'fix_url_references' ) ) {
-						self::update_database_url_references( preg_replace( '#/$#', '', trim( $_POST['replace_url'] ) ) );
-						echo '<p style="color:green">'. __( 'Database update is complete.', 'mpress-fix-url-references' ) .'</p>';
+						$rows = self::update_database_url_references( preg_replace( '#/$#', '', trim( $_POST['replace_url'] ) ) );
+						echo '<p style="color:green">'. sprintf( __( 'Database update is complete. %s instances replaced.', 'mpress-fix-url-references' ), $rows ) .'</p>';
 						echo '<p><a href="'. esc_attr( admin_url( 'tools.php?page=mpress-fix-url-references' ) ) .'" class="button-primary">'. __( 'Fix More URLs', 'mpress-fix-url-references' ) .'</a></p>';
 					} else {
 						if( ! defined( 'WP_HOME' ) || ! defined( 'WP_SITEURL' ) ) {
@@ -71,20 +71,22 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 		 * @param string $old_url
 		 */
 		public static function update_database_url_references( $old_url ) {
+			$rows = 0;
 			if( defined( 'WP_SITEURL' ) )
 				update_option( 'siteurl', WP_SITEURL );
 			if( defined( 'WP_HOME' ) ) {
 				update_option( 'home', WP_HOME );
-				self::run_replacement_query( 'commentmeta', 'meta_value', $old_url, WP_HOME );
-				self::run_replacement_query( 'comments', 'comment_content', $old_url, WP_HOME );
-				self::run_replacement_query( 'links', 'link_url', $old_url, WP_HOME );
-				self::run_replacement_query( 'links', 'link_rss', $old_url, WP_HOME );
-				self::run_replacement_query( 'options', 'option_value', $old_url, WP_HOME );
-				self::run_replacement_query( 'posts', 'post_content', $old_url, WP_HOME );
-				self::run_replacement_query( 'posts', 'guid', $old_url, WP_HOME );
-				self::run_replacement_query( 'postmeta', 'meta_value', $old_url, WP_HOME );
-				self::run_replacement_query( 'usermeta', 'meta_value', $old_url, WP_HOME );
+				$rows = self::run_replacement_query( 'commentmeta', 'meta_value', $old_url, WP_HOME ) + $rows;
+				$rows = self::run_replacement_query( 'comments', 'comment_content', $old_url, WP_HOME ) + $rows;
+				$rows = self::run_replacement_query( 'links', 'link_url', $old_url, WP_HOME ) + $rows;
+				$rows = self::run_replacement_query( 'links', 'link_rss', $old_url, WP_HOME ) + $rows;
+				$rows = self::run_replacement_query( 'options', 'option_value', $old_url, WP_HOME ) + $rows;
+				$rows = self::run_replacement_query( 'posts', 'post_content', $old_url, WP_HOME ) + $rows;
+				$rows = self::run_replacement_query( 'posts', 'guid', $old_url, WP_HOME ) + $rows;
+				$rows = self::run_replacement_query( 'postmeta', 'meta_value', $old_url, WP_HOME ) + $rows;
+				$rows = self::run_replacement_query( 'usermeta', 'meta_value', $old_url, WP_HOME ) + $rows;
 			}
+			return $rows;
 		}
 
 		/**
