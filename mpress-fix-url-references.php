@@ -37,7 +37,6 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 		 */
 		function page_content() { ?>
 			<div class="wrap">
-				<?php screen_icon( 'tools' ); ?>
 				<h2><?php _e( 'mPress Fix URL References', 'mpress-fix-url-references' ); ?></h2>
 				<div class="tool-box"><?php
 					if( ! empty( $_POST['replace_url'] ) && isset( $_POST['nonce'] ) && wp_verify_nonce( $_POST['nonce'], 'fix_url_references' ) ) {
