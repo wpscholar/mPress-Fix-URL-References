@@ -1,10 +1,10 @@
 === mPress Fix URL References ===
 Contributors: woodent
-Donate link: http://micahwood.me/donate/
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RML2YU88AB6AE&donate
 Tags: mpress, database, migrate, migration, URL, link, links
 Requires at least: 3.2
-Tested up to: 3.4.2
-Stable tag: 0.1
+Tested up to: 4.4.2
+Stable tag: 0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -81,6 +81,10 @@ This plugin replaces content in the 'post_content' field in the 'posts' table. T
 Notice how the table name doesn't include the WordPress table prefix.  This gets added automatically.
 
 == Changelog ==
+
+= 0.2 =
+
+* Removed deprecated screen_icon() function (props Shelob9)
 
 = 0.1 =
 

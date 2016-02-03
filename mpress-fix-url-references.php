@@ -2,18 +2,18 @@
 
 /**
  * Plugin Name: mPress Fix URL References
- * Plugin URI:http://micahwood.me/wordpress-plugins/mpress-fix-url-references/
+ * Plugin URI: http://wpscholar.com/wordpress-plugins/mpress-fix-url-references/
  * Description: Easily fix URL references in your WordPress database.
  * Author: Micah Wood
- * Author URI: http://micahwood.me
- * Version: 0.1
+ * Author URI: http://wpscholar.com
+ * Version: 0.2
  * License: GPL3
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
- * Copyright 2012 by Micah Wood - All rights reserved.
+ * Copyright 2012-2016 by Micah Wood - All rights reserved.
  */
 
-define( 'MPRESS_FIX_URL_REFERENCES_VERSION', '0.1' );
+define( 'MPRESS_FIX_URL_REFERENCES_VERSION', '0.2' );
 
 if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 
@@ -68,6 +68,7 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 		 * WordPress options.
 		 *
 		 * @param string $old_url
+		 * @return int
 		 */
 		public static function update_database_url_references( $old_url ) {
 			$rows = 0;
@@ -75,6 +76,7 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 				update_option( 'siteurl', WP_SITEURL );
 			if( defined( 'WP_HOME' ) ) {
 				update_option( 'home', WP_HOME );
+				// TODO: Update code to properly handle serialization for fields that may contain serialized data!
 				$rows = self::run_replacement_query( 'commentmeta', 'meta_value', $old_url, WP_HOME ) + $rows;
 				$rows = self::run_replacement_query( 'comments', 'comment_content', $old_url, WP_HOME ) + $rows;
 				$rows = self::run_replacement_query( 'links', 'link_url', $old_url, WP_HOME ) + $rows;
