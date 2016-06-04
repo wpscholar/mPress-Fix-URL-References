@@ -59,7 +59,7 @@ gulp.task('svn:addremove', function () {
         }))
 });
 
-// gulp svn:tag --v={version}
+// gulp svn:tag --v="{version}"
 gulp.task('svn:tag', function () {
     return gulp.src('*.js', {read: false})
         .pipe(shell([

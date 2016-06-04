@@ -6,7 +6,7 @@
  * Description: Easily fix URL references in your WordPress database.
  * Author: Micah Wood
  * Author URI: http://wpscholar.com
- * Version: 0.2
+ * Version: 1.0
  * License: GPL3
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
