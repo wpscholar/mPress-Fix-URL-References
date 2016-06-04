@@ -13,7 +13,7 @@
  * Copyright 2012-2016 by Micah Wood - All rights reserved.
  */
 
-define( 'MPRESS_FIX_URL_REFERENCES_VERSION', '0.2' );
+define( 'MPRESS_FIX_URL_REFERENCES_VERSION', '1.0' );
 
 if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 
@@ -39,23 +39,24 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 			<div class="wrap">
 				<h2><?php _e( 'mPress Fix URL References', 'mpress-fix-url-references' ); ?></h2>
 				<div class="tool-box"><?php
-					if( ! empty( $_POST['replace_url'] ) && isset( $_POST['nonce'] ) && wp_verify_nonce( $_POST['nonce'], 'fix_url_references' ) ) {
+					if ( ! empty( $_POST['replace_url'] ) && isset( $_POST['nonce'] ) && wp_verify_nonce( $_POST['nonce'], 'fix_url_references' ) ) {
 						$rows = self::update_database_url_references( preg_replace( '#/$#', '', trim( $_POST['replace_url'] ) ) );
-						echo '<p style="color:green">'. sprintf( __( 'Database update is complete. %s instances replaced.', 'mpress-fix-url-references' ), $rows ) .'</p>';
-						echo '<p><a href="'. esc_attr( admin_url( 'tools.php?page=mpress-fix-url-references' ) ) .'" class="button-primary">'. __( 'Fix More URLs', 'mpress-fix-url-references' ) .'</a></p>';
+						echo '<p style="color:green">' . sprintf( __( 'Database update is complete. %s instances replaced.', 'mpress-fix-url-references' ), $rows ) . '</p>';
+						echo '<p><a href="' . esc_attr( admin_url( 'tools.php?page=mpress-fix-url-references' ) ) . '" class="button-primary">' . __( 'Fix More URLs', 'mpress-fix-url-references' ) . '</a></p>';
 					} else {
-						if( ! defined( 'WP_HOME' ) || ! defined( 'WP_SITEURL' ) ) {
-							echo '<p>'. __( 'You must set the WP_HOME and WP_SITEURL constants in your wp-config.php file to use this plugin.', 'mpress-fix-url-references' ) .'</p>';
+						if ( ! defined( 'WP_HOME' ) || ! defined( 'WP_SITEURL' ) ) {
+							echo '<p>' . __( 'You must set the WP_HOME and WP_SITEURL constants in your wp-config.php file to use this plugin.', 'mpress-fix-url-references' ) . '</p>';
 						} else {
-							if( isset( $_POST['replace_url'] ) )
-								echo '<p style="color:red;">'. __( 'Please enter a URL!', 'mpress-fix-url-references' ) .'</p>';
-							echo '<p>'. __( 'URL references in the database that match your input will be replaced with: ', 'mpress-fix-url-references' ) .'<code>'. home_url() .'</code></p>';
+							if ( isset( $_POST['replace_url'] ) ) {
+								echo '<p style="color:red;">' . __( 'Please enter a URL!', 'mpress-fix-url-references' ) . '</p>';
+							}
+							echo '<p>' . __( 'URL references in the database that match your input will be replaced with: ', 'mpress-fix-url-references' ) . '<code>' . home_url() . '</code></p>';
 							echo '<form method="post"><p>';
-							echo '<label for="replace_url">'. __( 'URL reference to be replaced:', 'mpress-fix-url-references' ) .'</label> ';
-							echo '<input type="url" id="replace_url" name="replace_url" size="60" placeholder="'. esc_attr( home_url() ) .'" /></p>';
+							echo '<label for="replace_url">' . __( 'URL reference to be replaced:', 'mpress-fix-url-references' ) . '</label> ';
+							echo '<input type="url" id="replace_url" name="replace_url" size="60" placeholder="' . esc_attr( home_url() ) . '" /></p>';
 							wp_nonce_field( 'fix_url_references', 'nonce' );
-							echo '<p style="color:red;">'. __( '<strong>ALERT</strong>: Before running, please double check your entry and make sure you have backed up the database!', 'mpress-fix-url-references' ) . '</p>';
-							echo '<input type="submit" class="button-primary" value="'. esc_attr( __( 'Fix References', 'mpress-fix-url-references' ) ) .'" />';
+							echo '<p style="color:red;">' . __( '<strong>ALERT</strong>: Before running, please double check your entry and make sure you have backed up the database!', 'mpress-fix-url-references' ) . '</p>';
+							echo '<input type="submit" class="button-primary" value="' . esc_attr( __( 'Fix References', 'mpress-fix-url-references' ) ) . '" />';
 							echo '</form>';
 						}
 					} ?>
@@ -68,13 +69,15 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 		 * WordPress options.
 		 *
 		 * @param string $old_url
+		 *
 		 * @return int
 		 */
 		public static function update_database_url_references( $old_url ) {
 			$rows = 0;
-			if( defined( 'WP_SITEURL' ) )
+			if ( defined( 'WP_SITEURL' ) ) {
 				update_option( 'siteurl', WP_SITEURL );
-			if( defined( 'WP_HOME' ) ) {
+			}
+			if ( defined( 'WP_HOME' ) ) {
 				update_option( 'home', WP_HOME );
 				// TODO: Update code to properly handle serialization for fields that may contain serialized data!
 				$rows = self::run_replacement_query( 'commentmeta', 'meta_value', $old_url, WP_HOME ) + $rows;
@@ -87,6 +90,7 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 				$rows = self::run_replacement_query( 'postmeta', 'meta_value', $old_url, WP_HOME ) + $rows;
 				$rows = self::run_replacement_query( 'usermeta', 'meta_value', $old_url, WP_HOME ) + $rows;
 			}
+
 			return $rows;
 		}
 
@@ -108,6 +112,7 @@ if ( ! class_exists( 'mPress_Fix_URL_References' ) ) {
 			$table = $wpdb->_escape( $table );
 			$field = $wpdb->_escape( $field );
 			$sql = $wpdb->prepare( "UPDATE {$wpdb->$table} SET {$field} = REPLACE( {$field}, %s, %s )", $old, $new );
+
 			return $wpdb->query( $sql );
 		}
 

@@ -1,10 +1,10 @@
 === mPress Fix URL References ===
 Contributors: woodent
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RML2YU88AB6AE&donate
+Donate link: https://www.paypal.me/wpscholar
 Tags: mpress, database, migrate, migration, URL, link, links
 Requires at least: 3.2
-Tested up to: 4.4.2
-Stable tag: 0.2
+Tested up to: 4.5.2
+Stable tag: 1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -61,7 +61,7 @@ Before you do anything else, this plugin requires that you define the [WP_HOME](
 
 Once the plugin is installed and activated, just click on 'Fix URL References' in the 'Tools' menu on the left hand side in the WordPress admin area.  Next, simply enter the old URL you want to have replaced and click 'Fix References'.  Yep... it's that easy.
 
-== Advanced Usage ==
+== Frequently Asked Questions ==
 
 By default, this plugin only replaces URLs in specific tables and fields that would typically have URL references.  I understand that this doesn't meet everyone's use cases, so this plugin exposes a simple PHP function for replacing string content from any given table and field.
 
@@ -80,7 +80,15 @@ This plugin replaces content in the 'post_content' field in the 'posts' table. T
 
 Notice how the table name doesn't include the WordPress table prefix.  This gets added automatically.
 
+== Screenshots ==
+
+1. Go to 'Tools' -> 'Fix URL References' to get started.
+
 == Changelog ==
+
+= 1.0 =
+
+* Updated to release version after testing in WordPress 4.5.2
 
 = 0.2 =
 
@@ -91,3 +99,6 @@ Notice how the table name doesn't include the WordPress table prefix.  This gets
 * Initial commit
 
 == Upgrade Notice ==
+
+= 1.0 =
+Plugin is compatible with WordPress 4.5.2
