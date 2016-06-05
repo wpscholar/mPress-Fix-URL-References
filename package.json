@@ -1,6 +1,6 @@
 {
   "name": "mpress-hide-from-search",
-  "description": "The mPress Hide from Search plugin allows to you hide specific pages from WordPress search.",
+  "description": "Easily fix URL references in your WordPress database.",
   "author": "Micah Wood <micah@wpscholar.com> (http://wpscholar.com)",
   "license": "GPL-3.0+",
   "repository": {
